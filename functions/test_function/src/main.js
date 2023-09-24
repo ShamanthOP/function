@@ -23,6 +23,8 @@ export default async ({ req, res, log, error }) => {
     return res.json({"msg": process.env.APPWRITE_API_KEY});
   }
 
+  log("Hello")
+
   // `res.json()` is a handy helper for sending JSON
   return res.json({
     motto: 'Build Fast. Scale Big. All in One Place.',
