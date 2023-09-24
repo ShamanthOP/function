@@ -7,7 +7,7 @@ export default async ({ req, res, log, error }) => {
         .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
         .setKey(process.env.APPWRITE_API_KEY);
 
-    const db = Databases(client);
+    const db = new Databases(client);
     const receiver = new WebhookReceiver(
         `${process.env.LIVEKIT_API_KEY}`,
         `${process.env.LIVEKIT_API_SECRET}`
