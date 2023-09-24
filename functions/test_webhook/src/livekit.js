@@ -1,3 +1,5 @@
+import { WebhookReceiver } from "livekit-server-sdk";
+
 class LivekitService {
     constructor() {
         this.receiver = new WebhookReceiver(

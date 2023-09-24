@@ -1,5 +1,5 @@
-import AppwriteService from "./appwrite";
-import LivekitService from "./livekit";
+import AppwriteService from "./appwrite.js";
+import LivekitService from "./livekit.js";
 
 export default async (context) => {
     const { req, res, log, error } = context;
