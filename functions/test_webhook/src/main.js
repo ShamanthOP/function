@@ -13,7 +13,9 @@ export default async ({ req, res, log, error }) => {
         `${process.env.LIVEKIT_API_SECRET}`
     );
 
-        log(req.bodyRaw, req.headers, req);
+        log(req.bodyRaw);
+        log(req.headers);
+        log(req);
         const event = receiver.receive(req.bodyRaw, req.headers["Authorization"]);
         log("Webhook called", event.event, event.room.sid);
         return res.json({ msg: "ok" });
