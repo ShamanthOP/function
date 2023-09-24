@@ -1,22 +1,33 @@
-import { Client, Databases } from "node-appwrite";
-import { WebhookReceiver } from "livekit-server-sdk";
+import AppwriteService from "./appwrite";
+import LivekitService from "./livekit";
 
-export default async ({ req, res, log, error }) => {
-    const client = new Client()
-        .setEndpoint("https://cloud.appwrite.io/v1")
-        .setProject(process.env.APPWRITE_FUNCTION_PROJECT_ID)
-        .setKey(process.env.APPWRITE_API_KEY);
+export default async (context) => {
+    const { req, res, log, error } = context;
 
-    const db = new Databases(client);
-    const receiver = new WebhookReceiver(
-        `${process.env.LIVEKIT_API_KEY}`,
-        `${process.env.LIVEKIT_API_SECRET}`
-    );
+    const appwrite = new AppwriteService();
+    const livekit = new LivekitService();
 
-        log(req.bodyRaw);
-        log(req.headers.authorization);
-        log(req.headers["authorization"]);
-        const event = receiver.receive(req.bodyRaw, req.headers["authorization"]);
-        log("Webhook called", event.event, event.room.sid);
-        return res.json({ msg: "ok" });
+    try {
+        const event = livekit.validateWebhook(context, req);
+        if (!event) {
+            return res.json({ success: false }, 401);
+        }
+
+        log(event);
+
+        if (event.event === "room_finished") {
+            // Appwrite room id is same as Livekit room name
+            const appwriteRoomDocId = event.room.name;
+
+            // Delete the room in appwrite if it still exists
+            if (appwrite.doesRoomExist(appwriteRoomDocId)) {
+                appwrite.deleteRoom(appwriteRoomDocId);
+            }
+        }
+    } catch (e) {
+        error(e);
+        return res.json({ success: false }, 500);
+    }
+
+    return res.json({ success: true }, 200);
 };
