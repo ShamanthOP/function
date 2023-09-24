@@ -20,6 +20,7 @@ export default async (context) => {
             const appwriteRoomDocId = event.room.name;
 
             // Delete the room in appwrite if it still exists
+            log(appwrite.doesRoomExist(appwriteRoomDocId));
             if (appwrite.doesRoomExist(appwriteRoomDocId)) {
                 appwrite.deleteRoom(appwriteRoomDocId);
             }
