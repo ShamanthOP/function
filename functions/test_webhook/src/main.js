@@ -14,9 +14,9 @@ export default async ({ req, res, log, error }) => {
     );
 
         log(req.bodyRaw);
-        log(req.headers);
-        log(req);
-        const event = receiver.receive(req.bodyRaw, req.headers["Authorization"]);
+        log(req.headers.authorization);
+        log(req.headers["authorization"]);
+        const event = receiver.receive(req.bodyRaw, req.headers["authorization"]);
         log("Webhook called", event.event, event.room.sid);
         return res.json({ msg: "ok" });
 };
