@@ -11,8 +11,5 @@
     "dependencies": {
         "livekit-server-sdk": "^1.2.6",
         "node-appwrite": "^9.0.0"
-    },
-    "devDependencies": {
-        "prettier": "^3.0.0"
     }
 }
